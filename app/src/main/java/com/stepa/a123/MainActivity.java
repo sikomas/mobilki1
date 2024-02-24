@@ -2,52 +2,44 @@ package com.stepa.a123;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
+import com.stepa.a123.databinding.ActivityMainBinding;
+
 public class MainActivity extends AppCompatActivity {
-    private final static String TAG = "Жизненный цикл";
+    private ActivityMainBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Log.i(TAG, "onCreate");
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        init();
     }
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Toast.makeText(getApplicationContext(), "onStart()", Toast.LENGTH_SHORT).show();
-        Log.i(TAG, "onStart");
-    }
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Toast.makeText(getApplicationContext(), "onStop()", Toast.LENGTH_SHORT).show();
-        Log.i(TAG, "onStop");
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Toast.makeText(getApplicationContext(), "onDestroy()", Toast.LENGTH_SHORT).show();
-        Log.i(TAG, "onDestroy");
-    }
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Toast.makeText(getApplicationContext(), "onPause()", Toast.LENGTH_SHORT).show();
-        Log.i(TAG, "onPause");
-    }
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Toast.makeText(getApplicationContext(), "onResume()", Toast.LENGTH_SHORT).show();
-        Log.i(TAG, "onResume");
-    }
-    @Override
-    protected void onRestart(){
-        super.onRestart();
-        Toast.makeText(getApplicationContext(), "onRestart()", Toast.LENGTH_SHORT).show();
-        Log.i(TAG, "onRestart");
+
+
+
+    private void init() {
+        binding.image.getLayoutParams().height = (int) getResources().getDimension(R.dimen.picture_height);
+        binding.image.getLayoutParams().width = (int) getResources().getDimension(R.dimen.picture_width);
+        binding.image.setBackground(getResources().getDrawable(R.drawable.icons8______240));
+        binding.hello.setText(getResources().getText(R.string.picture_name));
+        Intent intent = getIntent();
+        String text = intent.getStringExtra("text2");
+        binding.edittext1.setText(text);
+        binding.button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("КНОПОЧКА", "Зачем жмав на кнопку?");
+                String text = binding.edittext1.getText().toString();
+                Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+                intent.putExtra("text1", text);
+                startActivity(intent);
+            }
+        });
     }
 }
